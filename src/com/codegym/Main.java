@@ -1,15 +1,21 @@
 package com.codegym;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        menu();
         int choice = -1;
         CandidatureManagement candidatureManagement = new CandidatureManagement();
+        try {
+            candidatureManagement.readerToFile("candidature.txt");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         do {
+            menu();
             System.out.println("Nhập lựa chọn của bạn: ");
             choice = scanner.nextInt();
             if (choice > 3) {
@@ -17,22 +23,16 @@ public class Main {
             }
             switch (choice) {
                 case 1: {
+                    System.out.println("----Hiển thị toàn bộ thi sinh----");
                     candidatureManagement.displayAllCandidature();
                     break;
                 }
-
                 case 2: {
                     System.out.println("----Nhập thông tin thí sinh mới----");
-                    System.out.println("Nhập số lượng thí sinh: ");
-                    int n = scanner.nextInt();
                     Candidature newCandidature;
-                    for (int i = 0; i < n; i++) {
-                        System.out.println("Thí sinh số: "+ (i+1));
-                        newCandidature = creatNewCandidature();
-                        candidatureManagement.addNewCandidature(newCandidature);
-                        System.out.println("Đã thêm thí sinh thành công!");
-                    }
-
+                    newCandidature = creatNewCandidature();
+                    candidatureManagement.addNewCandidature(newCandidature);
+                    System.out.println("Đã thêm thí sinh thành công!");
                     break;
                 }
                 case 3: {
@@ -41,13 +41,18 @@ public class Main {
                     System.out.println("Nhập SDB thí sinh cần tim: ");
                     int examID = scanner.nextInt();
                     int index = candidatureManagement.findExamIDCandidature(examID);
-                    if (index == -1){
-                        System.out.println("Không tìm thấy thí sinh có SBD : "+examID);
-                    }else {
+                    if (index == -1) {
+                        System.out.println("Không tìm thấy thí sinh có SBD : " + examID);
+                    } else {
                         System.out.println(candidatureManagement.getCandidatures().get(index));
                     }
                     break;
                 }
+            }
+            try {
+                candidatureManagement.writerToFile(candidatureManagement.getCandidatures(), "candidature.txt");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } while (choice != 4);
     }

@@ -1,6 +1,8 @@
 package com.codegym;
 
-public class BlockC extends Candidature{
+import java.io.Serializable;
+
+public class BlockC extends Candidature implements Serializable {
     private String examSubject;
 
     public BlockC(int examID, String name, String address, String priorityArea, String examSubject) {

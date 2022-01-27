@@ -1,8 +1,9 @@
 package com.codegym;
 
 
+import java.io.Serializable;
 
-public class Candidature {
+public class Candidature implements Serializable {
     protected int examID;
     protected String name;
     protected String address;

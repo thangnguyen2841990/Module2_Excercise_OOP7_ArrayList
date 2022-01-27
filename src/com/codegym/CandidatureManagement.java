@@ -1,6 +1,8 @@
 package com.codegym;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CandidatureManagement {
     private ArrayList<Candidature> candidatures = new ArrayList<>();
@@ -35,5 +37,15 @@ public class CandidatureManagement {
             }
         }
         return index;
+    }
+    public void writerToFile(List<Candidature> candidatures, String path) throws IOException {
+        OutputStream os = new FileOutputStream(path);
+        ObjectOutputStream oos = new ObjectOutputStream(os);
+        oos.writeObject(candidatures);
+    }
+    public void readerToFile(String path) throws IOException, ClassNotFoundException {
+        InputStream is = new FileInputStream(path);
+        ObjectInputStream ois = new ObjectInputStream(is);
+        this.candidatures = (ArrayList<Candidature>) ois.readObject();
     }
 }
